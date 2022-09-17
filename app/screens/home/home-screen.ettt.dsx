@@ -1,0 +1,21 @@
+import React from "react"
+import renderer from "react-test-renderer"
+import { HomeScreen } from "./home-sreen"
+
+const createTestProps = (props: any) => ({
+  navigation: {
+    navigate: jest.fn(),
+  },
+  ...props,
+})
+
+let props
+
+beforeEach(() => {
+  props = createTestProps({})
+})
+
+test("renders correctly", () => {
+  const tree = renderer.create(<HomeScreen {...props} />).toJSON()
+  expect(tree).toMatchSnapshot()
+})

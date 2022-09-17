@@ -1,4 +1,5 @@
 import { Api } from "../services/api"
+import { MoviesApi } from "../services/api/movies-api"
 
 let ReactotronDev
 if (__DEV__) {
@@ -18,6 +19,7 @@ export class Environment {
       this.reactotron = new ReactotronDev()
     }
     this.api = new Api()
+    this.movieApi = new MoviesApi(this.api)
   }
 
   async setup() {
@@ -37,4 +39,5 @@ export class Environment {
    * Our api.
    */
   api: Api
+  movieApi: MoviesApi
 }
