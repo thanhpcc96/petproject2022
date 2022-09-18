@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"
 import { View, StyleSheet, Animated } from "react-native"
+/* istanbul ignore next */
 import { LinearGradient } from "expo-linear-gradient"
 import { observer } from "mobx-react-lite"
 import { useFade } from "../../hooks/useFade"
@@ -10,29 +11,31 @@ interface Props {
 }
 
 export const GradientLayout = observer(({ children }: Props) => {
-  const {
-    gradientUIStore: { colors, prevColors, setPrevMainColors },
-  } = useStores()
+  const { gradientUIStore } = useStores()
   const { opacity, fadeIn, fadeOut } = useFade()
 
   useEffect(() => {
     fadeIn(() => {
-      setPrevMainColors(colors)
+      gradientUIStore?.setPrevMainColors(gradientUIStore?.colors)
       fadeOut()
     })
-  }, [colors])
+  }, [gradientUIStore?.colors])
 
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[prevColors.primary, prevColors.secondary, "white"]}
+        colors={[
+          gradientUIStore?.prevColors?.primary,
+          gradientUIStore?.prevColors?.secondary,
+          "white",
+        ]}
         style={{ ...StyleSheet.absoluteFillObject }}
         start={{ x: 0.1, y: 0.1 }}
         end={{ x: 0.5, y: 0.7 }}
       />
       <Animated.View style={{ ...StyleSheet.absoluteFillObject, opacity }}>
         <LinearGradient
-          colors={[colors.primary, colors.secondary, "white"]}
+          colors={[gradientUIStore?.colors?.primary, gradientUIStore?.colors?.secondary, "white"]}
           style={{ ...StyleSheet.absoluteFillObject }}
           start={{ x: 0.1, y: 0.1 }}
           end={{ x: 0.5, y: 0.7 }}

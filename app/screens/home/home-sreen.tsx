@@ -19,7 +19,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
     popularMoviesStore,
     topRatedMoviesStore,
     upcomingMoviesStore,
-    gradientUIStore: { setMainColors },
+    gradientUIStore,
   } = useStores()
   const { width: deviceWidth } = useWindowDimensions()
 
@@ -40,7 +40,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
     const movie = nowPlayingMoviesStore.movies[index]
     const uri = `${IMAGE_PREFIX}${movie.posterPath}`
     const [primary = "transparent", secondary = "transparent"] = await getImageColors(uri)
-    setMainColors({ primary, secondary })
+    gradientUIStore.setMainColors({ primary, secondary })
   }
 
   return (
@@ -48,9 +48,9 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
       <View style={FULL_VIEW}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={[FULL_VIEW, { marginTop: top }]}>
-            <View style={CAROUSEL_CONTAINER}>
+            <View style={CAROUSEL_CONTAINER} testID="carousel">
               <Carousel
-                data={nowPlayingMoviesStore.movies}
+                data={nowPlayingMoviesStore?.movies || []}
                 renderItem={({ item }: any) => <MoviePoster movie={item} />}
                 sliderWidth={deviceWidth}
                 itemWidth={300}
@@ -58,9 +58,9 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
                 onSnapToItem={(index) => getPosterColors(index)}
               />
             </View>
-            <HorizontalSlider title="Most popular" movies={popularMoviesStore.movies} />
-            <HorizontalSlider title="Top Rated" movies={topRatedMoviesStore.movies} />
-            <HorizontalSlider title="Upcomming" movies={upcomingMoviesStore.movies} />
+            <HorizontalSlider title="Most popular" movies={popularMoviesStore?.movies} />
+            <HorizontalSlider title="Top Rated" movies={topRatedMoviesStore?.movies} />
+            <HorizontalSlider title="Upcomming" movies={upcomingMoviesStore?.movies} />
           </View>
         </ScrollView>
       </View>

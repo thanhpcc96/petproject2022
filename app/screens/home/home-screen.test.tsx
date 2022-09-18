@@ -1,5 +1,5 @@
 import React from "react"
-import renderer from "react-test-renderer"
+import { render, screen, fireEvent } from "@testing-library/react-native"
 import { HomeScreen } from "./home-sreen"
 
 const createTestProps = (props: any) => ({
@@ -16,6 +16,6 @@ beforeEach(() => {
 })
 
 test("renders correctly", () => {
-  const tree = renderer.create(<HomeScreen {...props} />).toJSON()
-  expect(tree).toMatchSnapshot()
+  const { getByTestId } = render(<HomeScreen {...props} />)
+  expect(getByTestId("carousel")).toBeTruthy()
 })
